@@ -26,6 +26,7 @@ class MoneyMachine:
 
     def make_payment(self, cost):
         """Returns True when payment is accepted, or False if insufficient."""
+        self.money_received = 0
         self.process_coins()
         if self.money_received >= cost:
             change = round(self.money_received - cost, 2)
@@ -35,4 +36,3 @@ class MoneyMachine:
         else:
             print("Sorry that's not enough money. Money refunded.")
             return False
-        self.money_received = 0

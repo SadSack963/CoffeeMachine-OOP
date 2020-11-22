@@ -2,6 +2,7 @@ from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
 
+# Create Menu Item Objects
 cappuccino = MenuItem(
     name="cappuccino",
     water=250,
@@ -26,29 +27,41 @@ latte = MenuItem(
     cost=2.5
 )
 
-print(f"cappuccino.ingredients: {cappuccino.ingredients}")
-print()
-
+# Create Objects
 menu = Menu()
-print(f"menu.get_items(): {menu.get_items()}")
-print()
-print(f"menu.find_drink('cappuccino').ingredients: {menu.find_drink('cappuccino').ingredients}")
-print()
-
 coffee_maker = CoffeeMaker()
-print(f"coffee_maker.report(): {coffee_maker.report()}")  # No return value, hence prints 'None'
-print()
-print(f"coffee_maker.is_resource_sufficient(cappuccino): {coffee_maker.is_resource_sufficient(cappuccino)}")
-print()
-print(f"coffee_maker.make_coffee(cappuccino): {coffee_maker.make_coffee(cappuccino)}")  # No return value, hence prints 'None'
-print()
-print(f"coffee_maker.report(): {coffee_maker.report()}")  # No return value, hence prints 'None'
-print()
-
 money_machine = MoneyMachine()
-print(f"money_machine.make_payment(menu.find_drink('cappuccino'').cost): {money_machine.make_payment(menu.find_drink('cappuccino').cost)}")
-print()
-print(f"money_machine.report(): {money_machine.report()}")  # No return value, hence prints 'None'
-print()
-print(f"coffee_maker.report(): {coffee_maker.report()}")  # No return value, hence prints 'None'
-print()
+
+
+# Get User Drink Selection
+def user_selection():
+    """Get the user selection.
+    Returns: string selection"""
+    return input(f"What would you like? ({menu.get_items()}): ").lower()
+
+
+def machine():
+
+    run_machine = True
+    while run_machine:
+        choice = user_selection()
+        if choice == "off":
+            run_machine = False
+        elif choice == "report":
+            print("Resources:")
+            coffee_maker.report()
+            print("Profit:")
+            money_machine.report()
+        else:
+            drink = menu.find_drink(choice)
+            if drink == "None":
+                print("Invalid choice")
+            else:
+                sufficient = coffee_maker.is_resource_sufficient(drink)
+                if sufficient:
+                    paid = money_machine.make_payment(drink.cost)
+                    if paid:
+                        coffee_maker.make_coffee(drink)
+
+
+machine()
