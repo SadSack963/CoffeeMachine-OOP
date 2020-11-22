@@ -54,9 +54,7 @@ def machine():
             money_machine.report()
         else:
             drink = menu.find_drink(choice)
-            if drink == "None":
-                print("Invalid choice")
-            else:
+            if drink is not None:
                 sufficient = coffee_maker.is_resource_sufficient(drink)
                 if sufficient:
                     paid = money_machine.make_payment(drink.cost)
